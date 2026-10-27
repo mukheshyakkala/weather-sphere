@@ -1,0 +1,210 @@
+.app-error {
+  display: grid;
+  min-height: calc(100vh - 122px);
+  place-items: center;
+  padding: clamp(1rem, 4vw, 3rem);
+}
+
+.app-error-card {
+  position: relative;
+  display: flex;
+  width: min(100%, 34rem);
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  padding: clamp(2rem, 6vw, 3.5rem);
+  border: 1px solid var(--border-color);
+  border-radius: 2rem;
+  background:
+    radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--accent-color) 13%, transparent), transparent 58%),
+    var(--bg-secondary);
+  box-shadow: 0 24px 70px var(--shadow-color);
+  text-align: center;
+  animation: app-error-enter 0.45s ease both;
+}
+
+.app-error-card::before,
+.app-error-card::after {
+  position: absolute;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--accent-color);
+  box-shadow: 0 0 1.25rem 0.3rem color-mix(in srgb, var(--accent-color) 45%, transparent);
+  content: "";
+}
+
+.app-error-card::before {
+  top: 16%;
+  left: 13%;
+}
+
+.app-error-card::after {
+  top: 24%;
+  right: 14%;
+  width: 0.3rem;
+  height: 0.3rem;
+}
+
+.app-error-art {
+  position: relative;
+  display: grid;
+  width: 8rem;
+  height: 7rem;
+  place-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.app-error-sun {
+  position: absolute;
+  top: 0.65rem;
+  right: 1.1rem;
+  width: 3.2rem;
+  height: 3.2rem;
+  border: 1px solid color-mix(in srgb, #fbbf24 45%, transparent);
+  border-radius: 50%;
+  background: linear-gradient(145deg, #fde68a, #f59e0b);
+  box-shadow: 0 0 2.5rem color-mix(in srgb, #fbbf24 28%, transparent);
+  animation: app-error-sunrise 3.5s ease-in-out infinite alternate;
+}
+
+.app-error-cloud {
+  position: absolute;
+  bottom: 0.45rem;
+  left: 0.25rem;
+  width: 7rem;
+  height: 5rem;
+  color: var(--accent-color);
+  filter: drop-shadow(0 0.65rem 1rem var(--shadow-color));
+}
+
+.app-error-alert {
+  position: absolute;
+  right: 0;
+  bottom: 0.15rem;
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, #fb7185 38%, transparent);
+  border-radius: 50%;
+  background: color-mix(in srgb, #fb7185 14%, var(--bg-secondary));
+  color: #fb7185;
+}
+
+.app-error-eyebrow {
+  margin-bottom: 0.65rem;
+  color: var(--accent-color);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.app-error-card h1 {
+  color: var(--text-primary);
+  font-size: clamp(1.7rem, 5vw, 2.35rem);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1.15;
+}
+
+.app-error-message {
+  max-width: 25rem;
+  margin-top: 0.9rem;
+  color: var(--text-primary);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.app-error-help {
+  max-width: 24rem;
+  margin-top: 0.55rem;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.app-error-retry {
+  display: inline-flex;
+  min-height: 2.9rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 1.65rem;
+  padding: 0.75rem 1.35rem;
+  border: 0;
+  border-radius: 0.9rem;
+  background: var(--accent-gradient);
+  box-shadow: 0 8px 22px color-mix(in srgb, var(--accent-color) 22%, transparent);
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 750;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.app-error-retry:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--accent-color) 30%, transparent);
+  filter: brightness(1.08);
+}
+
+.app-error-retry:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent-color) 55%, transparent);
+  outline-offset: 3px;
+}
+
+.app-error-reference {
+  margin-top: 1rem;
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+  overflow-wrap: anywhere;
+}
+
+@keyframes app-error-enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes app-error-sunrise {
+  from {
+    transform: translateY(0.15rem);
+  }
+  to {
+    transform: translateY(-0.2rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .app-error {
+    min-height: calc(100vh - 100px);
+    padding: 1rem;
+  }
+
+  .app-error-card {
+    border-radius: 1.5rem;
+  }
+
+  .app-error-art {
+    transform: scale(0.9);
+    margin-bottom: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-error-card,
+  .app-error-sun {
+    animation: none;
+  }
+
+  .app-error-retry {
+    transition: none;
+  }
+}

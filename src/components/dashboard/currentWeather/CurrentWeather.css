@@ -1,0 +1,180 @@
+/* src/components/dashboard/CurrentWeather.css */
+
+.card-current {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 1.75rem;
+  box-shadow: 0 10px 25px var(--shadow-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.25rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-current:hover {
+  box-shadow: 0 15px 35px var(--shadow-color);
+  border-color: var(--accent-color);
+}
+
+.card-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.location-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.location-country {
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.date-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
+/* Weather Icon Animation Container */
+.weather-icon-box {
+  padding: 12px;
+  background: var(--bg-secondary);
+  border: 1px solid;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes floatIcon {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.bounce-slow {
+  animation: floatIcon 3s ease-in-out infinite;
+}
+
+.pulse-slow {
+  animation: pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.pulse-fast {
+  animation: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Temperature Display */
+.temp-section {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.temp-large-wrapper {
+  display: flex;
+  align-items: flex-start;
+}
+
+.temp-large {
+  font-size: 4.2rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.temp-unit {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-color);
+  margin-top: 4px;
+}
+
+.condition-text {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.feels-like {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+.highlight-val {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Extra Info Badge Grid */
+.weather-extra-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  background-color: var(--bg-secondary);
+  padding: 0.85rem;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+}
+
+.extra-badge {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.badge-label {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.badge-value {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.flex-align {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Footer */
+.card-footer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border-color);
+  padding-top: 0.75rem;
+}
+
+.update-status, .code-tag {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+}
+
+@media (max-width: 640px) {
+  .weather-extra-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  .temp-large {
+    font-size: 3.5rem;
+  }
+}

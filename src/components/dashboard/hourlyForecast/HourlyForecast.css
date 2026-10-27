@@ -1,0 +1,130 @@
+/* src/components/dashboard/HourlyForecast/HourlyForecast.css */
+.hourly-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  box-shadow: 0 10px 20px var(--shadow-color);
+}
+
+.hourly-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.hourly-header h3 {
+  font-size: clamp(1rem, 2.5vw, 1.1rem);
+  font-weight: 700;
+}
+
+.hourly-controls {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 0.5rem;
+}
+
+.hourly-control {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.hourly-control:hover,
+.hourly-control:focus-visible {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.hourly-control:focus-visible,
+.hourly-scroll:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 3px;
+}
+
+.hourly-scroll {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding: 0.25rem 0.1rem 0.75rem;
+  margin-top: 1rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.hourly-card {
+  flex: 0 0 95px;
+  min-width: 0;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1rem 0.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+  scroll-snap-align: start;
+}
+
+.hourly-card:hover {
+  border-color: var(--accent-color);
+  transform: translateY(-3px);
+}
+
+@media (max-width: 600px) {
+  .hourly-container {
+    border-radius: 18px;
+  }
+
+  .hourly-header {
+    align-items: flex-start;
+  }
+
+  .hourly-header h3 {
+    max-width: 230px;
+    line-height: 1.35;
+  }
+
+  .hourly-controls {
+    gap: 0.35rem;
+  }
+
+  .hourly-control {
+    width: 32px;
+    height: 32px;
+  }
+
+  .hourly-scroll {
+    gap: 0.65rem;
+  }
+
+  .hourly-card {
+    flex-basis: 84px;
+    padding: 0.85rem 0.4rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hourly-scroll {
+    scroll-behavior: auto;
+  }
+
+  .hourly-control,
+  .hourly-card {
+    transition: none;
+  }
+}

@@ -1,0 +1,59 @@
+/* src/components/dashboard/AirQualitySummary/AirQualitySummary.css */
+.aqi-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 20px var(--shadow-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.aqi-main-card {
+  margin-top: 1rem;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  padding: 1.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.aqi-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.aqi-recommendation {
+  margin-top: 1rem;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  background-color: var(--bg-secondary);
+  border: 1px dashed var(--border-color);
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+}
+
+.aqi-btn {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 10px;
+  border-radius: 14px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-primary);
+  color: var(--accent-color);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.aqi-btn:hover {
+  border-color: var(--accent-color);
+  background-color: var(--bg-hover);
+}

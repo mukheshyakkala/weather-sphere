@@ -1,0 +1,157 @@
+.sun-container {
+  min-width: 0;
+  padding: 1.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  box-shadow: 0 10px 20px var(--shadow-color);
+}
+
+.sun-container h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.sun-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.sun-card {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+}
+
+.sun-icon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  place-items: center;
+  border-radius: 12px;
+}
+
+.sun-icon-rise {
+  background: rgba(251, 191, 36, 0.15);
+}
+
+.sun-icon-set {
+  background: rgba(249, 115, 22, 0.15);
+}
+
+.sun-time-info {
+  min-width: 0;
+}
+
+.sun-time-label {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+}
+
+.sun-time {
+  margin-top: 2px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.sun-daylight-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  font-size: 0.85rem;
+}
+
+.sun-daylight-label {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+}
+
+.sun-daylight-label svg {
+  flex: 0 0 auto;
+}
+
+.sun-daylight-value {
+  flex: 0 0 auto;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .sun-container {
+    padding: 1.15rem;
+    border-radius: 18px;
+  }
+
+  .sun-container h3 {
+    font-size: 1rem;
+  }
+
+  .sun-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.6rem;
+  }
+
+  .sun-card {
+    gap: 0.5rem;
+    padding: 0.7rem 0.55rem;
+    border-radius: 14px;
+  }
+
+  .sun-icon {
+    width: 36px;
+    height: 36px;
+    flex-basis: 36px;
+  }
+
+  .sun-icon svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .sun-time {
+    font-size: clamp(0.82rem, 4vw, 1rem);
+  }
+
+  .sun-daylight-banner {
+    gap: 0.45rem;
+    padding: 0.75rem;
+    font-size: 0.78rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .sun-container {
+    padding: 0.9rem;
+  }
+
+  .sun-card {
+    padding: 0.75rem;
+  }
+
+  .sun-time {
+    font-size: 1rem;
+  }
+
+  .sun-daylight-banner {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
