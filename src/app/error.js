@@ -20,7 +20,7 @@ export default function Error({ error, reset }) {
           </span>
         </div>
 
-        <span className="app-error-eyebrow">WEATHERSPHERE STATUS</span>
+        <span className="app-error-eyebrow">Weather Sphere STATUS</span>
         <h1>We hit a weather delay</h1>
         <p className="app-error-message">
           Something went wrong while loading this page. Your saved locations and preferences are safe.

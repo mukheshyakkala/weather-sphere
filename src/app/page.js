@@ -39,13 +39,13 @@ export default function DashboardPage() {
     <main className="dashboard-main">
       {!clientReady && (
         <div style={{ height: "400px", display: "flex", alignItems: "center", justifyContent: "center" }} role="status">
-          <p>Loading WeatherSphere…</p>
+          <p>Loading Weather Sphere…</p>
         </div>
       )}
 
       {clientReady && preferencesHydrated && isLoading && (
         <div style={{ height: "400px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <p>Loading WeatherSphere Intelligence Data...</p>
+          <p>Loading Weather Sphere Intelligence Data...</p>
         </div>
       )}
 

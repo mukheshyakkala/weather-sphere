@@ -1,6 +1,6 @@
-# WeatherSphere
+# Weather Sphere
 
-WeatherSphere is a responsive weather dashboard built with Next.js, React, Redux Toolkit, and Recharts. It uses Open-Meteo for weather, air-quality, and location-search data, and OpenStreetMap for interactive maps.
+Weather Sphere is a responsive weather dashboard built with Next.js, React, Redux Toolkit, and Recharts. It uses Open-Meteo for weather, air-quality, and location-search data, and OpenStreetMap for interactive maps.
 
 ## Features
 

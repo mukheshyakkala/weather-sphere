@@ -3,7 +3,7 @@ import AppShell from "./AppShell";
 import "./globals.css";
 
 export const metadata = {
-  title: "WeatherSphere | Live Weather",
+  title: "Weather Sphere | Live Weather",
   description: "Current weather, forecasts, air quality, and weather maps for your location.",
 };
 

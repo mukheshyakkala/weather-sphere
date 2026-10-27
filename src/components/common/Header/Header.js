@@ -47,7 +47,7 @@ export default function Header() {
           <CloudSun size={24} />
         </div>
         <div className="brand-copy">
-          <h1 className="brand-title">WeatherSphere</h1>
+          <h1 className="brand-title">Weather Sphere</h1>
           <p className="brand-subtitle">Intelligence Dashboard</p>
         </div>
       </div>

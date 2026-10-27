@@ -117,7 +117,7 @@ export default function AppShell({ children }) {
         </div>
       </div>
       <footer className="app-footer">
-        © WeatherSphere. All rights reserved.
+        © Weather Sphere. All rights reserved.
       </footer>
     </div>
   );
