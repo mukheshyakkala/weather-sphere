@@ -5,6 +5,10 @@ const listeners = new Set();
 const EMPTY_FAVORITES = Object.freeze([]);
 let cachedFavorites;
 
+function isSameLocation(first, second) {
+  return first.latitude === second.latitude && first.longitude === second.longitude;
+}
+
 function getFavoritesSnapshot() {
   if (cachedFavorites) return cachedFavorites;
 
@@ -22,6 +26,8 @@ function getFavoritesSnapshot() {
           Number.isFinite(item.longitude) &&
           item.longitude >= -180 &&
           item.longitude <= 180,
+        ).filter((item, index, locations) =>
+          locations.findIndex((location) => isSameLocation(location, item)) === index,
         )
       : [];
   } catch (error) {
@@ -79,7 +85,7 @@ export function useFavorites() {
         !Number.isFinite(location.latitude) || location.latitude < -90 || location.latitude > 90 ||
         !Number.isFinite(location.longitude) || location.longitude < -180 || location.longitude > 180) return;
     updateFavorites((current) => (
-    current.some((item) => item.latitude === location.latitude && item.longitude === location.longitude)
+    current.some((item) => isSameLocation(item, location))
       ? current
       : [...current, location]
     ));
@@ -89,7 +95,7 @@ export function useFavorites() {
     if (!location || !Number.isFinite(location.latitude) || location.latitude < -90 || location.latitude > 90 ||
         !Number.isFinite(location.longitude) || location.longitude < -180 || location.longitude > 180) return;
     updateFavorites((current) => current.filter(
-      (item) => item.latitude !== location.latitude || item.longitude !== location.longitude,
+      (item) => !isSameLocation(item, location),
     ));
   };
 

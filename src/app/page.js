@@ -24,7 +24,7 @@ export default function DashboardPage() {
   const refreshInterval = useSelector((state) => state.preferences.refreshInterval);
   const clientReady = useClientReady();
 
-  const { data: weather, isLoading, isError } = useGetWeatherDataQuery({
+  const { currentData: weather, isLoading, isError } = useGetWeatherDataQuery({
     latitude: selectedLocation?.latitude,
     longitude: selectedLocation?.longitude,
     unit: tempUnit,

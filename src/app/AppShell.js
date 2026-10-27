@@ -92,7 +92,6 @@ export default function AppShell({ children }) {
           precipitationUnit: preferences.precipitationUnit,
           defaultForecastView: preferences.defaultForecastView,
           refreshInterval: preferences.refreshInterval,
-          selectedLocation: preferences.selectedLocation,
           recentSearches: preferences.recentSearches,
         }),
       );

@@ -17,7 +17,7 @@ export default function AirQualityPage() {
   const preferencesHydrated = useSelector((state) => state.preferences.hydrated);
   const clientReady = useClientReady();
   const ready = clientReady && preferencesHydrated;
-  const { data, isLoading, isError } = useGetAirQualityQuery({
+  const { currentData: data, isLoading, isError } = useGetAirQualityQuery({
     latitude: location?.latitude,
     longitude: location?.longitude,
   }, {

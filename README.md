@@ -80,7 +80,7 @@ For other platforms, install dependencies, run `npm run build`, and start the ap
 
 - Weather, forecast, and air-quality data are provided by [Open-Meteo](https://open-meteo.com/); location search uses its geocoding service.
 - Browser-detected coordinates are reverse-geocoded with [BigDataCloud](https://www.bigdatacloud.com/), so the app can display the detected locality and country.
-- On first visit, the app requests browser location access to load local weather and uses reverse geocoding to show the detected city and country. Browser-detected locations are refreshed on later visits; a manually selected city is kept as the default. If location access is unavailable or denied, search for a city or retry from Settings.
+- On each visit, the app requests browser location access to load local weather and uses reverse geocoding to show the detected city and country. A city selected from the header, Settings, Maps, or Compare updates weather across the app for the current session; the selected city is not restored from local storage on a later visit. If location access is unavailable or denied, search for a city or retry from Settings.
 - The interactive map uses [OpenStreetMap](https://www.openstreetmap.org/) tiles and displays map attribution.
 - The current map provider does not supply weather, rainfall, cloud, wind, AQI, or radar overlays; these layers are not available in the app.
 - Pollen measurements may be unavailable for some locations or seasons.

@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { Clock3, Heart, Search, Trash2 } from "lucide-react";
 import { useClientReady } from "../../app/utils/useClientReady";
 import { useLazySearchLocationsQuery } from "../../app/store/weatherApiSlice";
-import { clearRecentSearches, setSelectedLocation } from "../../app/store/preferencesSlice";
+import { clearRecentSearches, removeRecentSearch, setSelectedLocation } from "../../app/store/preferencesSlice";
 import FavoriteCityCard from "./FavoriteCityCard";
 import { useFavorites } from "./useFavorites";
 import "./FavoritesPage.css";
@@ -20,7 +20,7 @@ export default function FavoritesPage() {
   const { favorites, hydrated, addFavorite, removeFavorite } = useFavorites();
   const clientReady = useClientReady();
   const [query, setQuery] = useState("");
-  const [search, { data: results = [] }] = useLazySearchLocationsQuery();
+  const [search, { currentData: results = [] }] = useLazySearchLocationsQuery();
   const places = Array.isArray(results) ? results : [];
   const favoritesList = Array.isArray(favorites) ? favorites : [];
   const recentList = clientReady && preferencesHydrated && Array.isArray(recentSearches)
@@ -32,7 +32,11 @@ export default function FavoritesPage() {
     dispatch(setSelectedLocation(city));
     router.push(path);
   };
+  const isFavorite = (location) => favoritesList.some(
+    (favorite) => favorite.latitude === location.latitude && favorite.longitude === location.longitude,
+  );
   const addLocation = (location) => {
+    if (isFavorite(location)) return;
     addFavorite({
       name: location.name,
       country: location.country || "",
@@ -58,7 +62,10 @@ export default function FavoritesPage() {
                 }} />
                 {places.length > 0 && query.length >= 2 && (
                   <ul className="favorites-results">
-                    {places.filter((place) => Number.isFinite(place?.latitude) && Number.isFinite(place?.longitude)).map((place) => <li key={`${place.latitude}-${place.longitude}`}><button type="button" onClick={() => addLocation(place)}><strong>{place.name ?? "Unknown location"}</strong><small>{place.admin1 ? `${place.admin1}, ` : ""}{place.country ?? ""}</small><span>Add</span></button></li>)}
+                    {places.filter((place) => Number.isFinite(place?.latitude) && Number.isFinite(place?.longitude)).map((place) => {
+                      const saved = isFavorite(place);
+                      return <li key={`${place.latitude}-${place.longitude}`}><button type="button" onClick={() => addLocation(place)} disabled={saved}><strong>{place.name ?? "Unknown location"}</strong><small>{place.admin1 ? `${place.admin1}, ` : ""}{place.country ?? ""}</small><span>{saved ? "Saved" : "Add"}</span></button></li>;
+                    })}
                   </ul>
                 )}
               </label>
@@ -73,7 +80,13 @@ export default function FavoritesPage() {
             </section>
             <section className="favorites-section recent-section">
               <div className="favorites-heading"><div><span className="favorites-kicker">QUICK ACCESS</span><h2><Clock3 size={19} /> Recent searches</h2></div>{recentList.length > 0 && <button type="button" className="clear-recent" onClick={() => dispatch(clearRecentSearches())}><Trash2 size={14} /> Clear history</button>}</div>
-              {recentList.length ? <div className="recent-list">{recentList.map((city) => <div key={`${city.latitude}-${city.longitude}`}><button type="button" className="recent-name" onClick={() => navigate(city)}>{city.name ?? "Unknown location"}<small>{city.country ?? ""}</small></button><button type="button" className="recent-add" onClick={() => addLocation(city)} aria-label={`Add ${city.name ?? "location"} to favorites`}><Heart size={16} /></button></div>)}</div> : <p className="recent-empty">Recently selected cities will show here.</p>}
+              {recentList.length ? <div className="recent-list">{recentList.map((city) => {
+                const saved = isFavorite(city);
+                const isCurrentLocation = selectedLocation?.source === "browser" &&
+                  selectedLocation.latitude === city.latitude &&
+                  selectedLocation.longitude === city.longitude;
+                return <div key={`${city.latitude}-${city.longitude}`}><button type="button" className="recent-name" onClick={() => navigate(city)}>{city.name ?? "Unknown location"}<small>{city.country ?? ""}</small></button><div className="recent-actions"><button type="button" className="recent-add" onClick={() => addLocation(city)} disabled={saved} aria-label={saved ? `${city.name ?? "Location"} is already a favorite` : `Add ${city.name ?? "location"} to favorites`}><Heart size={16} /></button>{!isCurrentLocation && <button type="button" className="recent-remove" onClick={() => dispatch(removeRecentSearch(city))} aria-label={`Remove ${city.name ?? "location"} from recent searches`}><Trash2 size={15} /></button>}</div></div>;
+              })}</div> : <p className="recent-empty">Recently selected cities will show here.</p>}
             </section>
       </div>
     </main>

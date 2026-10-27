@@ -26,7 +26,7 @@ export default function ForecastPage() {
   const [view, setView] = useState(null);
   const [metric, setMetric] = useState("temperature");
   const [selectedDate, setSelectedDate] = useState("all");
-  const { data: weather, isLoading, isError } = useGetWeatherDataQuery({
+  const { currentData: weather, isLoading, isError } = useGetWeatherDataQuery({
     latitude: selectedLocation?.latitude,
     longitude: selectedLocation?.longitude,
     unit: tempUnit,

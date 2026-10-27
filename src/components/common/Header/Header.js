@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 import { Search, Sun, Moon, CloudSun, MapPin, Thermometer } from "lucide-react";
 import { setSelectedLocation, toggleTheme, toggleTemperatureUnit } from "../../../app/store/preferencesSlice";
 import { useLazySearchLocationsQuery } from "../../../app/store/weatherApiSlice";
@@ -9,11 +10,12 @@ import "./Header.css";
 
 export default function Header() {
   const dispatch = useDispatch();
+  const router = useRouter();
   const theme = useSelector((state) => state.preferences.theme);
   const tempUnit = useSelector((state) => state.preferences.temperatureUnit);
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [triggerSearch, { data: searchResults = [] }] = useLazySearchLocationsQuery();
+  const [triggerSearch, { currentData: searchResults = [] }] = useLazySearchLocationsQuery();
   const locations = Array.isArray(searchResults) ? searchResults : [];
 
   const handleSearchChange = (e) => {
@@ -35,6 +37,7 @@ export default function Header() {
       })
     );
     setSearchQuery("");
+    router.push("/");
   };
 
   return (

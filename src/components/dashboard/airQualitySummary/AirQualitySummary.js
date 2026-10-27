@@ -8,7 +8,7 @@ import "./AirQualitySummary.css";
 export default function AirQualitySummary() {
   const location = useSelector((state) => state.preferences.selectedLocation);
   const refreshInterval = useSelector((state) => state.preferences.refreshInterval);
-  const { data, isLoading, isError } = useGetAirQualityQuery(
+  const { currentData: data, isLoading, isError } = useGetAirQualityQuery(
     { latitude: location?.latitude, longitude: location?.longitude },
     {
       skip: !Number.isFinite(location?.latitude) || !Number.isFinite(location?.longitude),

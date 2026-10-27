@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { ArrowLeftRight, Droplets, Eye, Gauge, Thermometer, Wind } from "lucide-react";
 import { useClientReady } from "../../app/utils/useClientReady";
+import { setSelectedLocation } from "../../app/store/preferencesSlice";
 import { useGetAirQualityQuery, useGetWeatherDataQuery } from "../../app/store/weatherApiSlice";
 import CityPicker from "./CityPicker";
 import ComparisonChart from "./ComparisonChart";
@@ -50,6 +51,7 @@ function CityConditions({ city, weather, airQuality, unit }) {
 }
 
 export default function ComparePage() {
+  const dispatch = useDispatch();
   const selectedLocation = useSelector((state) => state.preferences.selectedLocation);
   const preferencesHydrated = useSelector((state) => state.preferences.hydrated);
   const tempUnit = useSelector((state) => state.preferences.temperatureUnit);
@@ -60,32 +62,57 @@ export default function ComparePage() {
   const ready = clientReady && preferencesHydrated;
   const [cityA, setCityA] = useState(null);
   const [cityB, setCityB] = useState(secondaryCity);
+  const preservePrimaryCity = useRef(false);
   const cityOne = cityA ?? selectedLocation;
   const hasCityOne = Number.isFinite(cityOne?.latitude) && cityOne.latitude >= -90 && cityOne.latitude <= 90 &&
     Number.isFinite(cityOne?.longitude) && cityOne.longitude >= -180 && cityOne.longitude <= 180;
   const hasCityTwo = Number.isFinite(cityB?.latitude) && cityB.latitude >= -90 && cityB.latitude <= 90 &&
     Number.isFinite(cityB?.longitude) && cityB.longitude >= -180 && cityB.longitude <= 180;
   const queryOptions = { unit: tempUnit, windSpeedUnit, precipitationUnit };
-  const { data: weatherA } = useGetWeatherDataQuery(
+  const { currentData: weatherA } = useGetWeatherDataQuery(
     { ...queryOptions, latitude: cityOne?.latitude, longitude: cityOne?.longitude },
     { pollingInterval: refreshInterval, skip: !hasCityOne },
   );
-  const { data: weatherB } = useGetWeatherDataQuery(
+  const { currentData: weatherB } = useGetWeatherDataQuery(
     { ...queryOptions, latitude: cityB?.latitude, longitude: cityB?.longitude },
     { pollingInterval: refreshInterval, skip: !hasCityTwo },
   );
-  const { data: airA } = useGetAirQualityQuery(
+  const { currentData: airA } = useGetAirQualityQuery(
     { latitude: cityOne?.latitude, longitude: cityOne?.longitude },
     { pollingInterval: refreshInterval, skip: !hasCityOne },
   );
-  const { data: airB } = useGetAirQualityQuery(
+  const { currentData: airB } = useGetAirQualityQuery(
     { latitude: cityB?.latitude, longitude: cityB?.longitude },
     { pollingInterval: refreshInterval, skip: !hasCityTwo },
   );
 
   const swapCities = () => {
-    setCityA(cityB);
+    preservePrimaryCity.current = true;
+    setCityA(null);
     setCityB(cityOne);
+    if (cityB) dispatch(setSelectedLocation(cityB));
+  };
+
+  useEffect(() => {
+    if (preservePrimaryCity.current) {
+      preservePrimaryCity.current = false;
+      return;
+    }
+
+    setCityA(null);
+  }, [selectedLocation]);
+
+  const choosePrimaryCity = (city) => {
+    setCityA(null);
+    if (city) dispatch(setSelectedLocation(city));
+  };
+
+  const chooseSecondaryCity = (city) => {
+    if (!city) return;
+    preservePrimaryCity.current = true;
+    setCityA(cityOne);
+    setCityB(city);
+    dispatch(setSelectedLocation(city));
   };
 
   return (
@@ -100,9 +127,9 @@ export default function ComparePage() {
               <p>Compare today&apos;s conditions, air quality and the week ahead.</p>
             </section>
             <section className="compare-pickers">
-              <CityPicker label="CITY ONE" city={cityOne} onChange={setCityA} />
+              <CityPicker label="CITY ONE" city={cityOne} onChange={choosePrimaryCity} />
               <button type="button" className="compare-swap" aria-label="Swap cities" onClick={swapCities}><ArrowLeftRight size={19} /></button>
-              <CityPicker label="CITY TWO" city={cityB} onChange={setCityB} />
+              <CityPicker label="CITY TWO" city={cityB} onChange={chooseSecondaryCity} />
             </section>
             <section className="compare-city-grid">
               <CityConditions city={cityOne} weather={weatherA} airQuality={airA} unit={tempUnit} />

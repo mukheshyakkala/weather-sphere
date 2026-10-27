@@ -38,17 +38,19 @@ function normalizeLocation(location) {
   };
 }
 
-function isLegacyDefaultLocation(location) {
-  return location?.latitude === 17.385 &&
-    location?.longitude === 78.4867 &&
-    location?.name === "Hyderabad";
+function isCurrentBrowserLocation(location, selectedLocation) {
+  return selectedLocation?.source === "browser" &&
+    location?.latitude === selectedLocation.latitude &&
+    location?.longitude === selectedLocation.longitude;
 }
 
 function updateSelectedLocation(state, location, source) {
   if (!isValidLocation(location)) return;
   const normalizedLocation = normalizeLocation({ ...location, source });
   state.selectedLocation = normalizedLocation;
+  state.locationStatus = "available";
   const recentSearches = Array.isArray(state.recentSearches) ? state.recentSearches : [];
+  console.log("Updating recent searches with:", normalizedLocation);
   state.recentSearches = [
     normalizedLocation,
     ...recentSearches.filter(
@@ -98,7 +100,21 @@ export const preferencesSlice = createSlice({
       if ([0, 300000, 900000, 1800000].includes(action.payload)) state.refreshInterval = action.payload;
     },
     clearRecentSearches: (state) => {
-      state.recentSearches = [];
+      state.recentSearches = state.selectedLocation?.source === "browser"
+        ? state.recentSearches.filter((location) =>
+            isCurrentBrowserLocation(location, state.selectedLocation),
+          )
+        : [];
+    },
+    removeRecentSearch: (state, action) => {
+      const location = action.payload;
+      if (!isValidLocation(location)) return;
+      if (isCurrentBrowserLocation(location, state.selectedLocation)) return;
+      state.recentSearches = state.recentSearches.filter(
+        (recentLocation) =>
+          recentLocation.latitude !== location.latitude ||
+          recentLocation.longitude !== location.longitude,
+      );
     },
     hydratePreferences: (state, action) => {
       const saved = action.payload;
@@ -109,9 +125,6 @@ export const preferencesSlice = createSlice({
         if (["mm", "inch"].includes(saved.precipitationUnit)) state.precipitationUnit = saved.precipitationUnit;
         if (["hourly", "daily"].includes(saved.defaultForecastView)) state.defaultForecastView = saved.defaultForecastView;
         if ([0, 300000, 900000, 1800000].includes(saved.refreshInterval)) state.refreshInterval = saved.refreshInterval;
-        if (isValidLocation(saved.selectedLocation) && !isLegacyDefaultLocation(saved.selectedLocation)) {
-          state.selectedLocation = normalizeLocation(saved.selectedLocation);
-        }
         if (Array.isArray(saved.recentSearches)) {
           state.recentSearches = saved.recentSearches
             .filter((location) =>
@@ -146,6 +159,7 @@ export const {
   setCurrentLocation,
   setLocationUnavailable,
   clearRecentSearches,
+  removeRecentSearch,
   hydratePreferences,
   resetPreferences,
 } = preferencesSlice.actions;

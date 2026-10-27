@@ -12,7 +12,7 @@ export default function LocationSettings() {
   const location = useSelector((state) => state.preferences.selectedLocation);
   const [query, setQuery] = useState("");
   const [message, setMessage] = useState("");
-  const [search, { data: results = [] }] = useLazySearchLocationsQuery();
+  const [search, { currentData: results = [] }] = useLazySearchLocationsQuery();
   const places = Array.isArray(results) ? results : [];
 
   const locate = async () => {

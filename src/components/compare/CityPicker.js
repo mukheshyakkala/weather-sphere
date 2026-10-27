@@ -6,7 +6,7 @@ import { useLazySearchLocationsQuery } from "../../app/store/weatherApiSlice";
 
 export default function CityPicker({ label, city, onChange }) {
   const [query, setQuery] = useState("");
-  const [search, { data: results = [] }] = useLazySearchLocationsQuery();
+  const [search, { currentData: results = [] }] = useLazySearchLocationsQuery();
   const selectedCity = city && typeof city === "object" ? city : {};
   const locations = Array.isArray(results) ? results : [];
 

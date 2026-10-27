@@ -1,9 +1,10 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Compass, Layers3, MapPin, Maximize2, Minus, Plus, Search, Wind } from "lucide-react";
 import { useClientReady } from "../../app/utils/useClientReady";
+import { setCurrentLocation, setSelectedLocation } from "../../app/store/preferencesSlice";
 import { useGetWeatherDataQuery, useLazySearchLocationsQuery } from "../../app/store/weatherApiSlice";
 import MapCanvas from "./MapCanvas";
 import { getWeatherDetails, formatValue } from "../forecast/forecastUtils";
@@ -11,6 +12,7 @@ import { getCurrentLocation } from "../../app/utils/geolocation";
 import "./MapsPage.css";
 
 export default function MapsPage() {
+  const dispatch = useDispatch();
   const selectedLocation = useSelector((state) => state.preferences.selectedLocation);
   const preferencesHydrated = useSelector((state) => state.preferences.hydrated);
   const tempUnit = useSelector((state) => state.preferences.temperatureUnit);
@@ -22,11 +24,10 @@ export default function MapsPage() {
   const mapRef = useRef(null);
   const [layerStyle, setLayerStyle] = useState("standard");
   const [searchText, setSearchText] = useState("");
-  const [pickedLocation, setPickedLocation] = useState(null);
   const [locationError, setLocationError] = useState("");
-  const [triggerSearch, { data: results = [] }] = useLazySearchLocationsQuery();
-  const mapLocation = pickedLocation || selectedLocation;
-  const { data: weather } = useGetWeatherDataQuery({
+  const [triggerSearch, { currentData: results = [] }] = useLazySearchLocationsQuery();
+  const mapLocation = selectedLocation;
+  const { currentData: weather } = useGetWeatherDataQuery({
     latitude: mapLocation?.latitude,
     longitude: mapLocation?.longitude,
     unit: tempUnit,
@@ -41,7 +42,7 @@ export default function MapsPage() {
   const WeatherIcon = details.Icon;
   const nextRain = weather?.hourly?.precipitation_probability?.[0];
 
-  const chooseLocation = (location) => {
+  const chooseLocation = (location, source = "manual") => {
     if (!Number.isFinite(location?.latitude) || location.latitude < -90 || location.latitude > 90 ||
         !Number.isFinite(location.longitude) || location.longitude < -180 || location.longitude > 180) return;
     const selected = {
@@ -50,7 +51,7 @@ export default function MapsPage() {
       latitude: location.latitude,
       longitude: location.longitude,
     };
-    setPickedLocation(selected);
+    dispatch(source === "browser" ? setCurrentLocation(selected) : setSelectedLocation(selected));
     setSearchText("");
     mapRef.current?.flyTo(selected);
   };
@@ -58,14 +59,18 @@ export default function MapsPage() {
   const pickCoordinates = (coords) => {
     if (!Number.isFinite(coords?.latitude) || coords.latitude < -90 || coords.latitude > 90 ||
         !Number.isFinite(coords.longitude) || coords.longitude < -180 || coords.longitude > 180) return;
-    setPickedLocation({ ...coords, name: `${coords.latitude.toFixed(2)}°, ${coords.longitude.toFixed(2)}°`, country: "" });
+    chooseLocation({
+      ...coords,
+      name: `${coords.latitude.toFixed(2)}°, ${coords.longitude.toFixed(2)}°`,
+      country: "",
+    });
   };
 
   const locateCurrentPosition = async () => {
     setLocationError("");
     try {
       const currentLocation = await getCurrentLocation();
-      chooseLocation(currentLocation);
+      chooseLocation(currentLocation, "browser");
     } catch (error) {
       console.warn("Unable to locate the current position.", error);
       setLocationError(error instanceof Error ? error.message : "Unable to access your current location.");
